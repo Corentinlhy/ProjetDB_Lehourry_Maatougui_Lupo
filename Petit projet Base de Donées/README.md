@@ -1,3 +1,12 @@
+Etape 1 MCD : 
+<img width="933" height="540" alt="image" src="https://github.com/user-attachments/assets/a7a77f13-3c98-4f2c-9db3-30e7eefd8345" />
+
+
+
+
+Etape MLD :
+
+
 Produit = (identifiant\_produit VARCHAR(5), Nom\_produit VARCHAR(50), catégorie\_produit VARCHAR(20), date\_lancement DATE);
 
 Boutique = (identifiant\_transaction BIGINT, montant\_payé DECIMAL(10,2), devise VARCHAR(3), moyen\_de\_payement VARCHAR(20), horrodatage DATE, \_Riot\_ID INT, \_identifiant\_produit INT, #identifiant\_produit);
@@ -12,11 +21,19 @@ Support\_client = (ID\_ticket INT, categorie\_probleme VARCHAR(30), statut\_tick
 
 
 
-**## II. Prompt d'insertion des données (Génération IA)**
+
+
+Etape 2 :
 
 
 
-**Pour générer un nombre conséquent de données cohérentes (Étape 4)\[cite: 3], le prompt suivant a été utilisé auprès d'une IA générative :**
+
+
+II. Prompt d'insertion des données (Génération IA)
+
+
+
+--Pour générer un nombre conséquent de données cohérentes (Étape 4)\[cite: 3], le prompt suivant a été utilisé auprès d'une IA générative :--
 
 
 
@@ -46,77 +63,62 @@ Support\_client = (ID\_ticket INT, categorie\_probleme VARCHAR(30), statut\_tick
 
 
 
-**## III. Scénario d'utilisation**
+
+
+Etape 3 :
 
 
 
-**Ce scénario définit le contexte d'interrogation de la base de données (Étape 5)\[cite: 5, 6].**
+
+III. Scénario d'utilisation
 
 
+Rôle défini :Analyste Marketing et Monétisation chez l'éditeur du jeu vidéo.
 
-**\*   \*\*Rôle défini :\*\* Analyste Marketing et Monétisation chez l'éditeur du jeu vidéo.**
+Contexte d'utilisation : L'entreprise souhaite lancer une nouvelle campagne promotionnelle ciblée pour la saison e-sport à venir et optimiser les revenus de sa boutique en ligne. L'analyste a besoin de comprendre le comportement d'achat des joueurs, l'influence des équipes partenaires sur ces achats, et de s'assurer que les problèmes de paiement sont vite résolus.
 
-**\*   \*\*Contexte d'utilisation :\*\* L'entreprise souhaite lancer une nouvelle campagne promotionnelle ciblée pour la saison e-sport à venir et optimiser les revenus de sa boutique en ligne. L'analyste a besoin de comprendre le comportement d'achat des joueurs, l'influence des équipes partenaires sur ces achats, et de s'assurer que les problèmes de paiement sont vite résolus.**
+Données extraites :
 
-**\*   \*\*Données extraites :\*\***
+&#x20;   Liste des emails et pseudos (Riot\_ID) des joueurs actifs, filtrée par région et équipe e-sport soutenue (pour des offres ciblées).
 
-&#x20;   **\*   Liste des emails et pseudos (Riot\_ID) des joueurs actifs, filtrée par région et équipe e-sport soutenue (pour des offres ciblées).**
+&#x20;   Statistiques financières de la boutique (CA par devise, montants moyens selon le moyen de paiement).
 
-&#x20;   **\*   Statistiques financières de la boutique (CA par devise, montants moyens selon le moyen de paiement).**
+&#x20;   Historique croisé des achats : identification des produits best-sellers par profil de joueur.
 
-&#x20;   **\*   Historique croisé des achats : identification des produits best-sellers par profil de joueur.**
-
-&#x20;   **\*   Détail des tickets de support ouverts avec l'identifiant du joueur pour intervention technique.**
-
-
-
-**---**
-
-
-
-**## IV. Étude du meilleur plan d'exécution**
-
-
-
-**Conformément à la consigne\[cite: 5, 8], voici l'étude d'optimisation d'une requête complexe.**
-
-
-
-**\*\*Requête étudiée :\*\***
-
-**\*« Obtenir le Riot\_ID et le mail des joueurs de la région 'EUW' appartenant à l'équipe 'Karmine Corp'. »\***
-
-
-
-**\*\*Code SQL :\*\***
-
-**```sql**
-
-**SELECT C.Riot\_ID, C.mail\_joueur** 
-
-**FROM Compte\_utilisateur C**
-
-**JOIN Equipe\_esport\_partenaire E ON C.ID\_Equipe = E.ID\_Equipe**
-
-**WHERE C.region\_joueur = 'EUW' AND E.nom\_equipe = 'Karmine Corp';**
+&#x20;   Détail des tickets de support ouverts avec l'identifiant du joueur pour intervention technique.
 
 
 
 
 
 
+Etape 4 :
 
 
 
-**graph 1 TD**
 
-&#x20;   **A\["π Riot\_ID, mail\_joueur <br> (2 lignes)"] --> B\["σ region='EUW' AND nom\_equipe='Karmine Corp' <br> (10 lignes évaluées)"]**
 
-&#x20;   **B --> C\["⋈ C.ID\_Equipe = E.ID\_Equipe <br> (10 lignes)"]**
+IV. Étude du meilleur plan d'exécution
 
-&#x20;   **C --> D\["Compte\_utilisateur <br> (10 lignes)"]**
 
-&#x20;   **C --> E\["Equipe\_esport\_partenaire <br> (10 lignes)"]**
+
+Requête étudiée :
+
+« Obtenir le Riot\_ID et le mail des joueurs de la région 'EUW' appartenant à l'équipe 'Karmine Corp'. »
+
+
+
+Code SQL :
+
+sql : 
+
+SELECT C.Riot\_ID, C.mail\_joueur
+
+FROM Compte\_utilisateur C
+
+JOIN Equipe\_esport\_partenaire E ON C.ID\_Equipe = E.ID\_Equipe
+
+WHERE C.region\_joueur = 'EUW' AND E.nom\_equipe = 'Karmine Corp';
 
 
 
@@ -124,15 +126,17 @@ Support\_client = (ID\_ticket INT, categorie\_probleme VARCHAR(30), statut\_tick
 
 
 
-**graph 2 TD**
 
-&#x20;   **A\["π Riot\_ID, mail\_joueur <br> (2 lignes)"] --> B\["⋈ C.ID\_Equipe = E.ID\_Equipe <br> (2 lignes)"]**
 
-&#x20;   **B --> C\["σ region='EUW' <br> (4 lignes)"]**
+graph 1 TD
+<img width="565" height="529" alt="image" src="https://github.com/user-attachments/assets/ca4fdc7f-0c4b-4991-ab2d-a03fe77fae02" />
 
-&#x20;   **B --> D\["σ nom\_equipe='Karmine Corp' <br> (1 ligne)"]**
 
-&#x20;   **C --> E\["Compte\_utilisateur <br> (10 lignes)"]**
 
-&#x20;   **D --> F\["Equipe\_esport\_partenaire <br> (10 lignes)"]**
 
+
+
+
+graph 2 TD
+
+<img width="574" height="562" alt="image" src="https://github.com/user-attachments/assets/b98b6aaf-5f0e-4cbd-a2e9-b7731442607a" />
